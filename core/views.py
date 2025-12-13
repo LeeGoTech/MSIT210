@@ -8,7 +8,7 @@ def home(request):
         'course': 'MSIT 210 - DevOps and Software Lifecycle Automation',
         'units': 3,
     }
-    return render('request', 'home.html', context)
+    return render(request, 'home.html', context)
 
 def about(request):
     context = {
@@ -16,10 +16,10 @@ def about(request):
         'name': 'Daniel Ligutan',
         'student_id': '2021-32347',
     }
-    return render('request', 'about.html', context)
+    return render(request, 'about.html', context)
 
 def base(request):
-    return render('request', 'base.html')
+    return render(request, 'base.html')
 
 def announcements(request):
     lists = {
@@ -27,6 +27,7 @@ def announcements(request):
         2: {"title": "First assignment."},
     }
     context = {
+        "title": "Announcements",
         "lists": lists
     }
     return render(request, "announcements.html", context)

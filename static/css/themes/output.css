@@ -274,6 +274,10 @@ a:not([href]):not([class]), a:not([href]):not([class]):hover {
   text-decoration: none;
 }
 
+img {
+  vertical-align: middle;
+}
+
 button {
   border-radius: 0;
 }
@@ -343,7 +347,8 @@ output {
   display: inline-block;
 }
 
-.container {
+.container,
+.container-fluid {
   --gutter-x: 1.625rem;
   --gutter-y: 0;
   width: 100%;
@@ -523,7 +528,8 @@ output {
   justify-content: space-between;
   padding: var(--navbar-padding-y) var(--navbar-padding-x);
 }
-.navbar > .container {
+.navbar > .container,
+.navbar > .container-fluid {
   display: flex;
   flex-wrap: inherit;
   align-items: center;
@@ -737,6 +743,13 @@ output {
 
 .text-heading[href]:hover {
   color: var(--primary) !important;
+}
+
+.container-p-y:not([class^=pt-]):not([class*=" pt-"]) {
+  padding-block-start: 1.5rem !important;
+}
+.container-p-y:not([class^=pb-]):not([class*=" pb-"]) {
+  padding-block-end: 1.5rem !important;
 }
 
 .icon-base {
@@ -1013,6 +1026,10 @@ button:focus-visible {
   flex-direction: column !important;
 }
 
+.flex-grow-1 {
+  flex-grow: 1 !important;
+}
+
 .align-items-center {
   align-items: center !important;
 }
@@ -1023,6 +1040,10 @@ button:focus-visible {
 
 .me-2 {
   margin-inline-end: 0.5rem !important;
+}
+
+.me-3 {
+  margin-inline-end: 0.75rem !important;
 }
 
 .me-auto {
@@ -1149,12 +1170,18 @@ button:focus-visible {
   .flex-column {
     min-block-size: 1px;
   }
+  img {
+    block-size: auto;
+    min-block-size: 1px;
+  }
 }
-.container {
+.container,
+.container-fluid {
   padding-inline: 1rem;
 }
 @media (min-width: 992px) {
-  .container {
+  .container,
+  .container-fluid {
     padding-inline: 1.625rem;
   }
 }
@@ -1207,6 +1234,11 @@ button:focus-visible {
   100% {
     opacity: 0.5;
   }
+}
+
+.app-brand-link {
+  display: flex;
+  align-items: center;
 }
 
 
@@ -1266,13 +1298,6 @@ nav.layout-navbar .navbar.landing-navbar .navbar-nav .nav-link.active,
 nav.layout-navbar .navbar.landing-navbar .navbar-nav .nav-link:hover {
   color: var(--primary);
 }
-nav.layout-navbar.navbar-active::before {
-  backdrop-filter: saturate(100%) blur(6px);
-}
-nav.layout-navbar.navbar-active .landing-navbar {
-  background-color: var(--paper-bg);
-  box-shadow: var(--box-shadow-sm);
-}
 
 .offcanvas {
   position: fixed;
@@ -1323,4 +1348,16 @@ nav.layout-navbar.navbar-active .landing-navbar {
   #menuBtn {
     display: none;
   }
+}
+
+[data-theme="light"] .custom-navbar {
+  background-color: #ffffff !important;
+}
+
+[data-theme="dark"] .custom-navbar {
+  background-color: #312D4B !important;
+}
+
+.custom-navbar-navbar {
+  background-color: transparent !important;
 }

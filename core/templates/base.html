@@ -19,9 +19,17 @@
 </head>
 <body>
   <div>
-    <nav class="layout-navbar shadow-none py-0 navbar-active">
+    <nav class="layout-navbar custom-navbar shadow-none py-0">
       <div class="container">
-        <div class="navbar navbar-expand-lg landing-navbar px-3 px-md-8">
+        <div class="navbar custom-navbar-navbar navbar-expand-lg landing-navbar px-3 px-md-8">
+          <a class="app-brand-link me-3" href="/">
+            <span class="app-brand-logo demo">
+              <span class="text-primary">
+                <img alt="Hop Logo" height="48" src="{% static 'images/EVSU.png' %}">
+              </span>
+            </span>
+          </a>
+
           <ul id="navigationBar" class="navbar-nav me-auto d-none d-sm-flex">
             {% block nav %}{% endblock nav %}
           </ul>
@@ -56,7 +64,9 @@
     </nav>
   </div>
   <div class="container">
-    {% block content %}{% endblock content %}
+    <div class="flex-grow-1 container-p-y container-fluid">
+      {% block content %}{% endblock content %}
+    </div>
   </div>
 </body>
   <script src="{% static 'js/navbar.js' %}" defer></script>
