@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
 from core.models import Post, Comment
-from core.forms import PostForm
+from core.forms import PostForm, CommentForm
 from django.template.loader import render_to_string
 import random
 
@@ -103,49 +103,61 @@ def delete_post(request, post_id):
     return JsonResponse({'success': False, 'error': 'Invalid request'})
 
 def create_comment(request):
-    if request.method == "POST" and request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        post_id = request.POST.get('post_id')
-        text = request.POST.get('text')
-
-        if not text:
-            return JsonResponse({'success': False, 'error': 'Comment text is required'})
+    if request.method == "POST" and request.headers.get("x-requested-with") == "XMLHttpRequest":
+        post_id = request.POST.get("post_id")
 
         try:
-            post = Post.objects.get(id=post_id)
-            random_name = random.choice(RANDOM_NAMES)
-            comment = Comment.objects.create(post=post, text=text, author=random_name)
-
-            # Render the new comment HTML
-            html = render_to_string('partials/_comment_item.html', {'comment': comment})
-            return JsonResponse({'success': True, 'html': html})
+            post = Post.objects.get(pk=post_id)
         except Post.DoesNotExist:
-            return JsonResponse({'success': False, 'error': 'Post not found'})
+            return JsonResponse({"success": False, "error": "Post not found"})
 
-    return JsonResponse({'success': False, 'error': 'Invalid request'})
+        form = CommentForm(request.POST)
+        if not form.is_valid():
+            return JsonResponse({
+                "success": False,
+                "error": form.errors.get("text", ["Invalid input"])[0]
+            })
+
+        comment = form.save(commit=False)
+        comment.post = post
+        comment.author = random.choice(RANDOM_NAMES)
+        comment.save()
+
+        html = render_to_string(
+            "partials/_comment_item.html",
+            {"comment": comment},
+            request=request
+        )
+
+        return JsonResponse({"success": True, "html": html})
+    return JsonResponse({"success": False, "error": "Invalid request"})
 
 def update_comment(request, comment_id):
     if request.method == "POST" and request.headers.get("x-requested-with") == "XMLHttpRequest":
-        comment = Comment.objects.get(pk=comment_id)
-        text = request.POST.get("text", "").strip()
-        if text:
-            comment.text = text
-            comment.save()
+        comment = get_object_or_404(Comment, pk=comment_id)
+
+        form = CommentForm(request.POST, instance=comment)
+        if not form.is_valid():
             return JsonResponse({
-                "success": True,
-                "comment": {
-                    "id": comment.id,
-                    "text": comment.text
-                }
+                "success": False,
+                "errors": form.errors.get("text", ["Invalid input"])[0]
             })
-        return JsonResponse({"success": False, "errors": "Empty text"})
+
+        form.save()
+
+        return JsonResponse({
+            "success": True,
+            "comment": {
+                "id": comment.id,
+                "text": comment.text
+            }
+        })
     return JsonResponse({"success": False, "errors": "Invalid request"})
 
 def delete_comment(request, comment_id):
     if request.method == "POST" and request.headers.get("x-requested-with") == "XMLHttpRequest":
-        try:
-            comment = Comment.objects.get(pk=comment_id)
-            comment.delete()
-            return JsonResponse({"success": True})
-        except Comment.DoesNotExist:
-            return JsonResponse({"success": False, "error": "Comment not found"})
+        comment = get_object_or_404(Comment, pk=comment_id)
+        comment.delete()
+        return JsonResponse({"success": True})
+
     return JsonResponse({"success": False, "error": "Invalid request"})
