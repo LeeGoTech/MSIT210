@@ -1,0 +1,27 @@
+<div class="comment-wrapper d-flex position-relative mb-3 comment" data-comment-id="{{ comment.id }}">
+  <div class="flex-shrink-0">
+    <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
+         style="width: 36px; height: 36px;">
+      {{ comment.author|first }}
+    </div>
+  </div>
+  <div class="d-flex flex-column ms-3 comment-content">
+    <div class="comment-view">
+      <div class="bg-light rounded px-3 py-2">
+        <strong>{{ comment.author }}</strong>
+        <div class="comment-text text-muted small">{{ comment.text }}</div>
+      </div>
+      <small class="text-muted">{{ comment.created_at|timesince }} ago •
+        <a href="javascript:void(0)" class="edit-comment">Edit</a> •
+        <a href="javascript:void(0)" class="delete-record">Delete</a>
+      </small>
+    </div>
+    <form class="comment-edit d-none">
+      <textarea class="form-control mb-2 edit-comment-text" rows="2">{{ comment.text }}</textarea>
+      <div class="d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-outline-secondary btn-sm cancel-comment-edit">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

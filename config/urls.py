@@ -25,4 +25,11 @@ urlpatterns = [
     path('base/', views.base, name='base'),
     path('announcements/', views.announcements, name='announcements'),
     path("announcements/<int:id>/", views.announcement_detail, name="announcement_detail"),
+    path('posts/', views.posts, name='posts'),
+    path('posts/create/', views.create_post, name='create_post'),
+    path('posts/update/<int:post_id>/', views.update_post, name='update_post'),
+    path('posts/delete/<int:post_id>/', views.delete_post, name='delete_post'),
+    path('comments/create/', views.create_comment, name='create_comment'),
+    path("comments/update/<int:comment_id>/", views.update_comment, name="update_comment"),
+    path('comments/delete/<int:comment_id>/', views.delete_comment, name='delete_comment'),
 ]

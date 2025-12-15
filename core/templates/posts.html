@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block nav %}
+<li class="nav-item">
+  <a class="nav-link fw-medium" href="{% url 'home' %}">Home</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link fw-medium" href="{% url 'about' %}">About</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link fw-medium" href="{% url 'announcements' %}">Announcements</a>
+</li>
+<li class="nav-item active">
+  <a class="nav-link fw-medium" href="{% url 'posts' %}">Posts</a>
+</li>
+{% endblock nav %}
+{% block content %}
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <form id="post-create-form" class="card mb-3">
+          {% csrf_token %}
+          <div class="card-body">
+            <h5 class="card-title mb-3">Create Post</h5>
+            <div class="mb-3">
+              <label class="form-label">Title</label>
+              <input type="text" class="form-control" name="title" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Body</label>
+              <textarea class="form-control" name="body" rows="4" required></textarea>
+            </div>
+            <button class="btn btn-primary">Post</button>
+          </div>
+        </form>
+        <!-- POST + COMMENTS CARD -->
+        <div id="posts-container" data-create-post-url="{% url 'create_post' %}">
+          {% for post in posts %}
+            {% include 'partials/_single_post.html' with post=post %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block scripts %}
+  {% load static %}
+  <script src="{% static 'js/libs/notyf.js' %}" defer></script>
+  <script type="module" src="{% static 'js/utils.js' %}" defer></script>
+  <script type="module" src="{% static 'js/post/create.js' %}" defer></script>
+  <script type="module" src="{% static 'js/post/update.js' %}" defer></script>
+  <script type="module" src="{% static 'js/post/delete.js' %}" defer></script>
+  <script type="module" src="{% static 'js/comment/create.js' %}" defer></script>
+  <script type="module" src="{% static 'js/comment/update.js' %}" defer></script>
+  <script type="module" src="{% static 'js/comment/delete.js' %}" defer></script>
+{% endblock scripts %}
